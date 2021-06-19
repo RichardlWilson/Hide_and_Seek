@@ -7,6 +7,7 @@ import random
 import string
 import bs4
 import requests
+import shutil
 
 
 def grab_text():
@@ -30,6 +31,12 @@ def make(random_text, path = os.getcwd()):
     Creates 10 randomly named folders with 20 randomly names text files inside
     each one.
     '''
+    main_folder_name = 'Hide_and_Seek'
+
+    os.mkdir(main_folder_name)
+    os.chdir(os.getcwd() +'\\'+ main_folder_name)
+    path = os.getcwd()
+
     alpha = list(string.ascii_lowercase)
 
     for _ in range(10):
@@ -82,25 +89,21 @@ def inject_phone_num():
         f.write(random_phone_num)
 
 
-def zip_dir():
-    folder_list = []
+def zip_dir(starting_dir):
+    '''
+    Compresses Hide_and_Seek Directory into a zip format.
+    '''
+    os.chdir(starting_dir)
+    shutil.make_archive('Hide_and_seek', 'zip', starting_dir+'\\'+'Hide_and_seek')
+    shutil.rmtree(starting_dir+'\\'+'Hide_and_seek')
 
-    for folder, sub_folders, files in os.walk(getcwd()):
-        for sub_folder in sub_folders:
-            folder_list.append(sub_folder)
-            
-    for folder in folder_list:
-        try:
-            shutil.make_archive('hide_and_seek', 'zip',getcwd()) 
-        except:
-            print('Something went wrong zip aborted.')
 
 if __name__ == '__main__':
-
+    starting_dir = os.getcwd()
     irum_lipsum = grab_text()
     make(irum_lipsum)
     inject_phone_num()
-    zip_dir()
+    zip_dir(starting_dir)
 
 
        
